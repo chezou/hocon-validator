@@ -1,5 +1,9 @@
 # hocon-validator
 
+HOCON validator, inspired by JSON schema.
+
+If you can write schema file with YAML, you can validate your HOCON file.
+
 ## Requirements
 
 - pyyaml
