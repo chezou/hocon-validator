@@ -15,7 +15,8 @@ def print_ok(message):
 def print_ng(message):
     print(color.NG + message + color.END_CODE)
 
-def validation(schema, conf, all_pass=True):
+def validation(schema, conf):
+    all_pass = True
     for e, current_schema in schema['properties'].items():
         _type = current_schema['type']
         if _type == 'object':
@@ -28,7 +29,7 @@ def validation(schema, conf, all_pass=True):
                 all_pass = False
 
             if 'required' in current_schema:
-                all_pass = validation(current_schema, child_conf, all_pass)
+                all_pass = all_pass and validation(current_schema, child_conf)
 
         elif _type == 'string':
             try:
