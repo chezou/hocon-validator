@@ -1,0 +1,65 @@
+---
+title: tableau-schema
+type: object
+required:
+  - name
+  - provider
+  - ssh
+  - common-instance-properties
+  - instances
+  - cloudera-manager
+  - cluster
+properties: 
+  name: 
+    type: string
+  provider: 
+    type: object
+    required:
+      - type
+      - accessKeyId
+      - secretAccessKey
+      - region
+      - subnetId
+      - securityGroupsIds
+    properties: 
+      type: 
+        type: string
+      accessKeyId: 
+        type: string
+      secretAccessKey: 
+        type: string      
+      region: 
+        type: string
+      subnetId: 
+        type: string      
+      securityGroupsIds: 
+        type: string
+  ssh: 
+    type: object
+    required: 
+      - username
+      - privateKey
+    properties: 
+      username: 
+        type: string
+      privateKey: 
+        type: string
+  common-instance-properties: 
+    type: object
+    required: 
+      - image
+    properties: 
+      image: 
+        type: string
+      tags: 
+        type: object
+        properties: 
+          owner: 
+            type: 
+              string
+  instances: 
+    type: object
+  cloudera-manager: 
+    type: object
+  cluster: 
+    type: object
