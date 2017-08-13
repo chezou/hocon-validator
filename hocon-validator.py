@@ -16,8 +16,12 @@ def print_ng(message):
     print(color.NG + message + color.END_CODE)
 
 def validation(schema, conf, all_pass=True):
-    for e in schema['required']:
-        current_schema = schema['properties'][e]
+    if 'required' in schema:
+        for e in schema['required']:
+            if not e in schema['properties'].keys():
+                print_ng('{} does not exist'.format(e))
+
+    for e, current_schema in schema['properties'].items():
         _type = current_schema['type']
         if _type == 'object':
             try:
@@ -81,4 +85,4 @@ if __name__ == '__main__':
     print("Schema file: {}\n".format(schema_file))
     print("Start validation...")
     if validation(schema, conf):
-        print_ok("All required fields has passed!")
+        print_ok("All fields are valid!")
