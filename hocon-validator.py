@@ -92,3 +92,5 @@ if __name__ == '__main__':
     print("Start validation...")
     if validation(schema, conf):
         print_ok("All fields are valid!")
+    else:
+        exit(-1)
