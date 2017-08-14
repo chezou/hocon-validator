@@ -1,5 +1,7 @@
 # hocon-validator
 
+[![Build Status](https://travis-ci.org/chezou/hocon-validator.svg?branch=master)](https://travis-ci.org/chezou/hocon-validator)
+
 HOCON validator, inspired by [JSON schema](http://json-schema.org/).
 
 If you can write schema file with YAML, you can validate your HOCON file.
