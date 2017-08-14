@@ -1,5 +1,5 @@
 import unittest
-from hocon_validator import hocon_validator
+import hocon_validator
 from pyhocon import ConfigFactory
 import yaml
 
