@@ -15,7 +15,7 @@ def print_ok(message):
 def print_ng(message):
     print(color.NG + message + color.END_CODE)
 
-def validation(schema, conf):
+def validate(schema, conf):
     all_pass = True
     if not 'properties' in schema:
         return all_pass
@@ -32,7 +32,7 @@ def validation(schema, conf):
                 all_pass = False
 
             if 'required' in current_schema:
-                all_pass = all_pass and validation(current_schema, child_conf)
+                all_pass = all_pass and validate(current_schema, child_conf)
 
         elif _type == 'string':
             try:
@@ -62,7 +62,7 @@ def validation(schema, conf):
                 all_pass = False
 
             for child_conf in child_confs:
-                all_pass = all_pass and validation(current_schema, child_conf)
+                all_pass = all_pass and validate(current_schema, child_conf)
 
         elif _type == 'float':
             try:
@@ -77,6 +77,9 @@ def validation(schema, conf):
             print_ng("Invalid type: {}".format(_type))
 
     return all_pass
+
+validation = validate
+
 
 def main():
     parser = ArgumentParser()
@@ -95,7 +98,7 @@ def main():
     print("HOCON file: {}".format(hocon_file))
     print("Schema file: {}\n".format(schema_file))
     print("Start validation...")
-    if validation(schema, conf):
+    if validate(schema, conf):
         print_ok("All fields are valid!")
     else:
         exit(-1)

@@ -81,4 +81,4 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validation(schema, conf))
+        self.assertTrue(hocon_validator.validate(schema, conf))
