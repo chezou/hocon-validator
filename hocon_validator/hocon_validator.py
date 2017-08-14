@@ -17,6 +17,9 @@ def print_ng(message):
 
 def validation(schema, conf):
     all_pass = True
+    if not 'properties' in schema:
+        return all_pass
+
     for e, current_schema in schema['properties'].items():
         _type = current_schema['type']
         if _type == 'object':
@@ -42,7 +45,7 @@ def validation(schema, conf):
 
         elif _type == 'bool':
             try:
-                conf.get_boolean(e)
+                conf.get_bool(e)
             except ConfigException:
                 if 'required' in schema and e in schema['required']:
                     print_ng('{} is required field'.format(e))
@@ -96,7 +99,7 @@ def main():
         print_ok("All fields are valid!")
     else:
         exit(-1)
-    
+
 
 if __name__ == '__main__':
     main()
