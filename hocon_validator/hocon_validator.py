@@ -75,10 +75,10 @@ def validation(schema, conf):
 
     return all_pass
 
-if __name__ == '__main__':
+def main():
     parser = ArgumentParser()
     parser.add_argument("hocon_file", help="HOCON file for validation")
-    parser.add_argument("schema_file", help="Schema file for HOCON")
+    parser.add_argument("schema_file", help="Schema file of YAML format")
     args = parser.parse_args()
 
     schema_file = args.schema_file
@@ -96,3 +96,7 @@ if __name__ == '__main__':
         print_ok("All fields are valid!")
     else:
         exit(-1)
+    
+
+if __name__ == '__main__':
+    main()
