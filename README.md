@@ -45,3 +45,7 @@ Start validation...
 accessKeyId does not exist or is not a string value.
 secretAccessKey does not exist or is not a string value.
 ```
+
+## Schema
+
+See `./examples/tableau-schema.yml` for example.
