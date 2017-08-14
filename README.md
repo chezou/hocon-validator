@@ -9,14 +9,24 @@ If you can write schema file with YAML, you can validate your HOCON file.
 - pyyaml
 - pyhocon
 
+For developpers:
+
 ```
 $ pip install -r requirements.txt -c constraints.txt
 ```
 
 ## USAGE
 
+Install with pip:
+
 ```
-$ hocon-validator.py [-h] hocon_file schema_file
+$ pip install hocon-validator
+```
+
+You can run as follows:
+
+```
+$ hocon-validator.py [-h] hocon_file schema_file.yml
 ```
 
 Example:
