@@ -17,8 +17,6 @@ def print_ng(message):
 
 def validate(schema, conf):
     all_pass = True
-    if not 'properties' in schema:
-        return all_pass
 
     for e, current_schema in schema['properties'].items():
         _type = current_schema['type']
@@ -60,9 +58,6 @@ def validate(schema, conf):
                     print_ng('{} is required field'.format(e))
                 print_ng('{} is not a list value.'.format(e))
                 all_pass = False
-
-            for child_conf in child_confs:
-                all_pass = all_pass and validate(current_schema, child_conf)
 
         elif _type == 'float':
             try:

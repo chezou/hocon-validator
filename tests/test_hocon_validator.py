@@ -82,3 +82,108 @@ properties:
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
         self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_bool(self):
+        hocon = """
+{
+    active: True
+}
+"""
+
+        schema_yaml = """
+title: test-schema
+type: object
+required:
+  - active
+properties:
+  active:
+    type: float
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_float(self):
+        hocon = """
+{
+    active: 2
+}
+"""
+
+        schema_yaml = """
+title: test-schema
+type: object
+required:
+  - active
+properties:
+  active:
+    type: float
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_string(self):
+        hocon = """
+{
+    active: foo
+}
+"""
+
+        schema_yaml = """
+title: test-schema
+type: object
+required:
+  - active
+properties:
+  active:
+    type: string
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_list(self):
+        hocon = """
+{
+    active: [1, 2, 3]
+}
+"""
+
+        schema_yaml = """
+title: test-schema
+type: object
+required:
+  - active
+properties:
+  active:
+    type: list
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_object(self):
+        hocon = """
+{
+    active: {
+        test: 1
+    }
+}
+"""
+
+        schema_yaml = """
+title: test-schema
+type: object
+required:
+  - active
+properties:
+  active:
+    type: object
+    properties:
+      test:
+        type: float
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
