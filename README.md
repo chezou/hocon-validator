@@ -1,6 +1,6 @@
 # hocon-validator
 
-HOCON validator, inspired by JSON schema.
+HOCON validator, inspired by [JSON schema](http://json-schema.org/).
 
 If you can write schema file with YAML, you can validate your HOCON file.
 
