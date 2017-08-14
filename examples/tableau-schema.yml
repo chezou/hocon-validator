@@ -63,3 +63,6 @@ properties:
     type: object
   cluster: 
     type: object
+    properties:
+      parcelRepositories:
+        type: list

@@ -51,12 +51,15 @@ def validation(schema, conf):
 
         elif _type == 'list':
             try:
-                conf.get_list(e)
+                child_confs = conf.get_list(e)
             except ConfigException:
                 if 'required' in schema and e in schema['required']:
                     print_ng('{} is required field'.format(e))
                 print_ng('{} is not a list value.'.format(e))
                 all_pass = False
+
+            for child_conf in child_confs:
+                all_pass = all_pass and validation(current_schema, child_conf)
 
         elif _type == 'float':
             try:
@@ -80,7 +83,6 @@ if __name__ == '__main__':
 
     schema_file = args.schema_file
     hocon_file = args.hocon_file
-
 
     conf = ConfigFactory.parse_file(hocon_file)
 
