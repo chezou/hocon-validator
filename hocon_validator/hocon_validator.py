@@ -15,61 +15,59 @@ def print_ok(message):
 def print_ng(message):
     print(color.NG + message + color.END_CODE)
 
+
+
 def validate(schema, conf):
     all_pass = True
 
-    for e, current_schema in schema['properties'].items():
-        _type = current_schema['type']
-        if _type == 'object':
-            try:
-                child_conf = conf.get_config(e)
-            except ConfigException:
-                if 'required' in schema and e in schema['required']:
-                    print_ng('{} is required field'.format(e))
-                print_ng('{} is not a object value.'.format(e))
+    _type = schema['type']
+    if not conf:
+        return True
+
+    elif _type == 'string':
+        if not isinstance(conf, str):
+            print_ng('{} is not a string value'.format(conf))
+            return False
+
+    elif _type == 'float':
+        if not isinstance(conf, int) and not isinstance(conf, float):
+            print_ng('{} is not a float value'.format(conf))
+            return False
+
+    elif _type == 'object':
+        if not isinstance(conf, dict):
+            print_ng('{} is not a object value'.format(conf))
+            return False
+
+        if 'properties' in schema:
+            for k, v in schema['properties'].items():
+                all_pass = all_pass and validate(v, conf[k])
+
+            return all_pass
+
+    elif _type == 'bool':
+        if not isinstance(conf, bool):
+            print_ng('{} is not a boolean value'.format(conf))
+            return False
+
+    elif _type == 'list':
+        if 'items' in schema:
+            __items = schema['items']
+            if isinstance(__items, dict):
+                for c in conf:
+                    all_pass = all_pass and validate(__items, c)
+
+            elif isinstance(__items, list):
+                for dic, c in zip(__items, conf):
+                    all_pass = all_pass and validate(dic, c)
+            else:
                 all_pass = False
 
-            if 'required' in current_schema:
-                all_pass = all_pass and validate(current_schema, child_conf)
+        return all_pass
 
-        elif _type == 'string':
-            try:
-                conf.get_string(e)
-            except ConfigException:
-                if 'required' in schema and e in schema['required']:
-                    print_ng('{} is required field'.format(e))
-                print_ng('{} is not a string value.'.format(e))
-                all_pass = False
-
-        elif _type == 'bool':
-            try:
-                conf.get_bool(e)
-            except ConfigException:
-                if 'required' in schema and e in schema['required']:
-                    print_ng('{} is required field'.format(e))
-                print_ng('{} is not a boolean value.'.format(e))
-                all_pass = False
-
-        elif _type == 'list':
-            try:
-                child_confs = conf.get_list(e)
-            except ConfigException:
-                if 'required' in schema and e in schema['required']:
-                    print_ng('{} is required field'.format(e))
-                print_ng('{} is not a list value.'.format(e))
-                all_pass = False
-
-        elif _type == 'float':
-            try:
-                conf.get_float(e)
-            except ConfigException:
-                if 'required' in schema and e in schema['required']:
-                    print_ng('{} is required field'.format(e))
-                print_ng('{} is not a float value.'.format(e))
-                all_pass = False
-
-        else:
-            print_ng("Invalid type: {}".format(_type))
+    else:
+        print_ng("Invalid type: {}".format(_type))
+        return False
 
     return all_pass
 

@@ -187,3 +187,73 @@ properties:
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
         self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_list2(self):
+        hocon = """[1, 2, 3]
+"""
+
+        schema_yaml = """
+title: test-schema
+type: list
+items:
+  type: float
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_list3(self):
+        hocon = '[1600, "Pennsylvania", "Avenue", "NW"]'
+
+        schema_yaml = """
+title: test-schema
+type: list
+items:
+  - type: float
+  - type: string
+  - type: string
+  - type: string
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_list5(self):
+        hocon = '[{foo: True, bar: "test"}, "Pennsylvania"]'
+
+        schema_yaml = """
+title: test-schema
+type: list
+items:
+  - type:
+      object
+    properties:
+      foo:
+        type: bool
+      bar:
+        type: string
+  - type: string
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_list5(self):
+        hocon = '[[1, 2, 3], ["Pennsylvania"]]'
+
+        schema_yaml = """
+title: test-schema
+type: list
+items:
+  - type:
+      list
+    items:
+      type: float
+  - type:
+      list
+    items:
+      type: string
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
