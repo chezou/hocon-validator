@@ -69,7 +69,7 @@ def validate(schema, conf):
         print_ng("Invalid type: {}".format(_type))
         return False
 
-    return all_pass
+    return True
 
 validation = validate
 
