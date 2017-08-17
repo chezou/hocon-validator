@@ -54,7 +54,7 @@ properties:
       enable_logging:
         type: bool
       resolver:
-        type: string
+        type: null
       home_dir:
         type: string
       mysql:

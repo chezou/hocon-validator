@@ -21,8 +21,10 @@ def validate(schema, conf):
     all_pass = True
 
     _type = schema['type']
-    if not conf:
-        return True
+    if _type is None:
+        if conf:
+            print_ng('{} is not a null value'.format(conf))
+            return False
 
     elif _type == 'string':
         if not isinstance(conf, str):
