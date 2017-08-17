@@ -68,13 +68,13 @@ properties:
           host:
             type: string
           port:
-            type: float
+            type: number
           username:
             type: string
           password:
             type: string
           retries:
-            type: float
+            type: number
 
       ips:
         type: array
@@ -103,10 +103,10 @@ properties:
         schema = yaml.load(schema_yaml)
         self.assertTrue(hocon_validator.validate(schema, conf))
 
-    def test_validate_float(self):
+    def test_validate_number(self):
         hocon = """
 {
-    active: 2
+    active: 2.0
 }
 """
 
@@ -117,13 +117,13 @@ required:
   - active
 properties:
   active:
-    type: float
+    type: number
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
         self.assertTrue(hocon_validator.validate(schema, conf))
 
-    def test_validate_float2(self):
+    def test_validate_number2(self):
         hocon = """
 {
     active: bool
@@ -137,7 +137,7 @@ required:
   - active
 properties:
   active:
-    type: float
+    type: number
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
@@ -223,7 +223,7 @@ properties:
     type: object
     properties:
       test:
-        type: float
+        type: number
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
@@ -237,7 +237,7 @@ properties:
 title: test-schema
 type: array
 items:
-  type: float
+  type: number
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
@@ -250,7 +250,7 @@ items:
 title: test-schema
 type: array
 items:
-  - type: float
+  - type: number
   - type: string
   - type: string
   - type: string
@@ -289,7 +289,7 @@ items:
   - type:
       list
     items:
-      type: float
+      type: number
   - type:
       list
     items:
@@ -318,7 +318,7 @@ properties:
     type: object
     properties:
       test:
-        type: float
+        type: number
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
