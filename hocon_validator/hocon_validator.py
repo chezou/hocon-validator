@@ -52,7 +52,7 @@ def validate(schema, conf):
             print_ng('{} is not a boolean value'.format(conf))
             return False
 
-    elif _type == 'list':
+    elif _type in ['list', 'array']:
         if 'items' in schema:
             __items = schema['items']
             if isinstance(__items, dict):

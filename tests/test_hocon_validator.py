@@ -77,7 +77,7 @@ properties:
             type: float
 
       ips:
-        type: list
+        type: array
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
@@ -157,7 +157,7 @@ required:
   - active
 properties:
   active:
-    type: list
+    type: array
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
@@ -194,7 +194,7 @@ properties:
 
         schema_yaml = """
 title: test-schema
-type: list
+type: array
 items:
   type: float
 """
@@ -207,7 +207,7 @@ items:
 
         schema_yaml = """
 title: test-schema
-type: list
+type: array
 items:
   - type: float
   - type: string
@@ -223,7 +223,7 @@ items:
 
         schema_yaml = """
 title: test-schema
-type: list
+type: array
 items:
   - type:
       object
@@ -243,7 +243,7 @@ items:
 
         schema_yaml = """
 title: test-schema
-type: list
+type: array
 items:
   - type:
       list
