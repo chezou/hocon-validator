@@ -7,7 +7,7 @@ setuptools.setup(
     author_email='chezou@gmail.com',
     license='Apache License 2.0',
     keywords='HOCON validator',
-    version='0.1.0',
+    version='0.1.1',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
