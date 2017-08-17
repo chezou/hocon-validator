@@ -143,6 +143,26 @@ properties:
         schema = yaml.load(schema_yaml)
         self.assertFalse(hocon_validator.validate(schema, conf))
 
+    def test_validate_int(self):
+        hocon = """
+{
+    active: 2
+}
+"""
+
+        schema_yaml = """
+title: test-schema
+type: object
+required:
+  - active
+properties:
+  active:
+    type: integer
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertTrue(hocon_validator.validate(schema, conf))
+
 
     def test_validate_string(self):
         hocon = """

@@ -31,7 +31,15 @@ def validate(schema, conf):
             print_ng('{} is not a string value'.format(conf))
             return False
 
-    elif _type == 'float':
+    elif _type == 'integer':
+        if not isinstance(conf, int):
+            print_ng('{} is not a float value'.format(conf))
+            return False
+
+        if isinstance(conf, bool):
+            print_ng('{} is not a float value'.format(conf))
+            return False
+
         if not isinstance(conf, int) and not isinstance(conf, float):
             print_ng('{} is not a float value'.format(conf))
             return False
