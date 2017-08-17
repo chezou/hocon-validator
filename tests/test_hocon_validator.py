@@ -257,3 +257,28 @@ items:
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
         self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_object_missing_required(self):
+        hocon = """
+{
+    active_: {
+        test: 1
+    }
+}
+"""
+
+        schema_yaml = """
+title: test-schema
+type: object
+required:
+  - active
+properties:
+  active:
+    type: object
+    properties:
+      test:
+        type: float
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertFalse(hocon_validator.validate(schema, conf))

@@ -43,7 +43,12 @@ def validate(schema, conf):
 
         if 'properties' in schema:
             for k, v in schema['properties'].items():
-                all_pass = all_pass and validate(v, conf[k])
+                try:
+                    child_conf = conf.get(k)
+                    all_pass = all_pass and validate(v, child_conf)
+                except ConfigException:
+                    print_ng('{} is a required field'.format(k))
+                    all_pass = False
 
             return all_pass
 
