@@ -97,7 +97,7 @@ required:
   - active
 properties:
   active:
-    type: float
+    type: bool
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
@@ -122,6 +122,27 @@ properties:
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
         self.assertTrue(hocon_validator.validate(schema, conf))
+
+    def test_validate_float2(self):
+        hocon = """
+{
+    active: bool
+}
+"""
+
+        schema_yaml = """
+title: test-schema
+type: object
+required:
+  - active
+properties:
+  active:
+    type: float
+"""
+        conf = ConfigFactory.parse_string(hocon)
+        schema = yaml.load(schema_yaml)
+        self.assertFalse(hocon_validator.validate(schema, conf))
+
 
     def test_validate_string(self):
         hocon = """
