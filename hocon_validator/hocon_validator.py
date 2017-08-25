@@ -1,7 +1,11 @@
 from pyhocon import ConfigFactory
+from pyhocon.tool import HOCONConverter
 from pyhocon.exceptions import ConfigException
 import yaml
+import json
 from argparse import ArgumentParser
+from jsonschema.validators import Draft4Validator
+from sys import stderr
 
 class color:
     OK = '\033[92m'
@@ -15,84 +19,19 @@ def print_ok(message):
 def print_ng(message):
     print(color.NG + message + color.END_CODE)
 
+class Validator:
+    def __init__(self, schema):
+        self.validator = Draft4Validator(schema)
 
+    def validate(self, conf):
+        conf_json = json.loads(HOCONConverter.to_json(conf), strict=False)
+        errored = False
+        for error in self.validator.iter_errors(conf_json):
+            stderr.write("{}{}: {}{}".format(
+                color.NG, error.instance, error.message, color.END_CODE))
+            errored = True
 
-def validate(schema, conf):
-    all_pass = True
-
-    _type = schema['type']
-    if _type is None:
-        if conf:
-            print_ng('{} is not a null value'.format(conf))
-            return False
-
-    elif _type == 'string':
-        if not isinstance(conf, str):
-            print_ng('{} is not a string value'.format(conf))
-            return False
-
-    elif _type == 'integer':
-        if not isinstance(conf, int):
-            print_ng('{} is not a float value'.format(conf))
-            return False
-
-        if isinstance(conf, bool):
-            print_ng('{} is not a float value'.format(conf))
-            return False
-
-    elif _type in ['float', 'number']:
-        if not isinstance(conf, int) and not isinstance(conf, float):
-            print_ng('{} is not a float value'.format(conf))
-            return False
-
-        if isinstance(conf, bool):
-            print_ng('{} is not a float value'.format(conf))
-            return False
-
-    elif _type == 'object':
-        if not isinstance(conf, dict):
-            print_ng('{} is not a object value'.format(conf))
-            return False
-
-        if 'properties' in schema:
-            for k, v in schema['properties'].items():
-                try:
-                    child_conf = conf.get(k)
-                    all_pass = all_pass and validate(v, child_conf)
-                except ConfigException:
-                    if 'required' in schema and k in schema['required']:
-                        print_ng('{} is a required field'.format(k))
-                        all_pass = False
-
-            return all_pass
-
-    elif _type == 'bool':
-        if not isinstance(conf, bool):
-            print_ng('{} is not a boolean value'.format(conf))
-            return False
-
-    elif _type in ['list', 'array']:
-        if 'items' in schema:
-            __items = schema['items']
-            if isinstance(__items, dict):
-                for c in conf:
-                    all_pass = all_pass and validate(__items, c)
-
-            elif isinstance(__items, list):
-                for dic, c in zip(__items, conf):
-                    all_pass = all_pass and validate(dic, c)
-            else:
-                all_pass = False
-
-        return all_pass
-
-    else:
-        print_ng("Invalid type: {}".format(_type))
-        return False
-
-    return all_pass
-
-validation = validate
+        return not errored
 
 
 def main():
@@ -112,11 +51,11 @@ def main():
     print("HOCON file: {}".format(hocon_file))
     print("Schema file: {}\n".format(schema_file))
     print("Start validation...")
-    if validate(schema, conf):
-        print_ok("All fields are valid!")
-    else:
-        exit(-1)
 
+    validator = Validator(schema)
+
+    if not validator.validate(conf):
+        exit(-1)
 
 if __name__ == '__main__':
     main()

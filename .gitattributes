@@ -1,1 +1,8 @@
 * text=auto
+*.sh text eof=lf
+
+*.py text eof=lf
+*.conf text eof=lf
+*.yml text eof=lf
+*.cfg text eof=lf
+*.ini text eof=lf

@@ -1,1 +1,1 @@
-from .hocon_validator import validate
+from .hocon_validator import Validator

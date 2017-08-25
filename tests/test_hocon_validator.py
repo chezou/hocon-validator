@@ -1,5 +1,5 @@
 import unittest
-import hocon_validator
+from hocon_validator import Validator
 from pyhocon import ConfigFactory
 import yaml
 
@@ -50,11 +50,11 @@ properties:
       - ips
     properties:
       active:
-        type: bool
+        type: boolean
       enable_logging:
-        type: bool
+        type: boolean
       resolver:
-        type: null
+        type: "null"
       home_dir:
         type: string
       mysql:
@@ -81,7 +81,8 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
     def test_validate_bool(self):
         hocon = """
@@ -97,11 +98,12 @@ required:
   - active
 properties:
   active:
-    type: bool
+    type: boolean
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
     def test_validate_number(self):
         hocon = """
@@ -121,12 +123,13 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
     def test_validate_number2(self):
         hocon = """
 {
-    active: bool
+    active: boolean
 }
 """
 
@@ -141,7 +144,8 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertFalse(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertFalse(validator.validate(conf))
 
     def test_validate_int(self):
         hocon = """
@@ -161,7 +165,8 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
 
     def test_validate_string(self):
@@ -182,9 +187,10 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
-    def test_validate_list(self):
+    def test_validate_array(self):
         hocon = """
 {
     active: [1, 2, 3]
@@ -202,7 +208,8 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
     def test_validate_object(self):
         hocon = """
@@ -227,9 +234,10 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
-    def test_validate_list2(self):
+    def test_validate_array2(self):
         hocon = """[1, 2, 3]
 """
 
@@ -241,9 +249,10 @@ items:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
-    def test_validate_list3(self):
+    def test_validate_array3(self):
         hocon = '[1600, "Pennsylvania", "Avenue", "NW"]'
 
         schema_yaml = """
@@ -257,9 +266,10 @@ items:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
-    def test_validate_list5(self):
+    def test_validate_array5(self):
         hocon = '[{foo: True, bar: "test"}, "Pennsylvania"]'
 
         schema_yaml = """
@@ -270,16 +280,17 @@ items:
       object
     properties:
       foo:
-        type: bool
+        type: boolean
       bar:
         type: string
   - type: string
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
-    def test_validate_list5(self):
+    def test_validate_array5(self):
         hocon = '[[1, 2, 3], ["Pennsylvania"]]'
 
         schema_yaml = """
@@ -287,17 +298,18 @@ title: test-schema
 type: array
 items:
   - type:
-      list
+      array
     items:
       type: number
   - type:
-      list
+      array
     items:
       type: string
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
 
     def test_validate_object_missing_required(self):
         hocon = """
@@ -322,7 +334,8 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertFalse(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertFalse(validator.validate(conf))
 
     def test_validate_object_missing_properties(self):
         hocon = """
@@ -340,4 +353,5 @@ properties:
 """
         conf = ConfigFactory.parse_string(hocon)
         schema = yaml.load(schema_yaml)
-        self.assertTrue(hocon_validator.validate(schema, conf))
+        validator = Validator(schema)
+        self.assertTrue(validator.validate(conf))
