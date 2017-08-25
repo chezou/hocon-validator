@@ -2,3 +2,4 @@ pyyaml
 pyhocon
 pytest
 pytest-env
+jsonschema

@@ -21,6 +21,7 @@ setuptools.setup(
     install_requires=[
         'pyyaml',
         'pyhocon',
+        'jsonschema'
     ],
     entry_points={
         'console_scripts': [
